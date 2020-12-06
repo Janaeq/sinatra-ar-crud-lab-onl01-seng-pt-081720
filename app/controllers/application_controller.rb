@@ -10,4 +10,49 @@ class ApplicationController < Sinatra::Base
 
   get '/' do
   end
+#the order in which you put your methods matter
+# have to be in CRUD order?
+
+
+#CREATE
+  get '/articles/new' do
+    erb :new
+  end
+
+  post '/articles' do
+    @article = Article.create(params)
+    redirect to "/articles/#{@article.id}"
+  end
+
+#READ
+  get '/articles' do
+    @articles = Article.all
+    erb :index
+  end
+
+  get '/articles/:id' do
+    @article = Article.find(params[:id])
+    erb :show
+  end
+
+#UPDATE
+
+  get '/articles/:id/edit' do
+    @article = Article.find(params[:id])
+    erb :edit
+  end
+
+  patch '/articles/:id' do
+    @article = Article.find(params[:id])
+    @article.update(params[:article])
+    redirect to "/articles/#{@article.id}"
+  end
+
+  #DELETE
+  delete '/articles/:id' do
+    @article = Article.find(params[:id])
+    @article.destroy
+    redirect to "/articles"
+  end
+
 end
